@@ -4,6 +4,7 @@
   const LEGACY_STORAGE_KEY = "worknote.tasks.v1";
   const MIGRATION_STORAGE_KEY = "worknote.sqlite.migrated.v1";
   const UI_MODE_STORAGE_KEY = "worknote.ui.windowMode.v4";
+  const LANGUAGE_STORAGE_KEY = "worknote.ui.language.v1";
   const SELECTED_DATE_STORAGE_KEY = "worknote.ui.selectedDate.v1";
   const WINDOW_SHOWN_EVENT = "main-window-shown";
   const WINDOW_FOCUSED_EVENT = "main-window-focused";
@@ -27,9 +28,223 @@
     important: 2,
     normal: 3,
   };
-  const TASK_PRIORITY_LABELS = {
-    urgent: "紧急",
-    important: "重要",
+  const TASK_PRIORITY_LABEL_KEYS = {
+    urgent: "urgent",
+    important: "important",
+  };
+  const TRANSLATIONS = {
+    zh: {
+      edgeLogoExpand: "展开 Worknote 浮窗",
+      languageToEnglish: "切换到英文",
+      languageToChinese: "切换到中文",
+      goToday: "回到今天",
+      datePickerLabel: "月份日期选择",
+      previousMonth: "上个月",
+      nextMonth: "下个月",
+      weekdayMon: "一",
+      weekdayTue: "二",
+      weekdayWed: "三",
+      weekdayThu: "四",
+      weekdayFri: "五",
+      weekdaySat: "六",
+      weekdaySun: "日",
+      statsLabel: "所选日期任务统计与新增",
+      todoLabel: "未完成",
+      doneLabel: "已完成",
+      addTaskLabel: "新增任务",
+      quickRecord: "快速记录",
+      inputTodayTask: "输入今日任务",
+      inputSelectedTask: "输入{date}任务",
+      add: "新增",
+      taskTagsLabel: "任务标签，可多选",
+      taskTagsHint: "任务标签 · 可多选，不选即常规",
+      priority: "优先",
+      urgent: "紧急",
+      important: "重要",
+      todayTasks: "今日任务",
+      selectedDateTasks: "{date}任务",
+      tomorrowTasks: "明日任务",
+      nextDayTasks: "次日任务",
+      todayEmpty: "今天还没有待办。",
+      selectedDateEmpty: "{date}还没有待办。",
+      tomorrowEmpty: "明天还没有安排。",
+      nextDayEmpty: "次日还没有安排。",
+      inbox: "待安排",
+      inboxEmpty: "没有待安排任务。",
+      completed: "已完成",
+      clear: "清空",
+      confirmDelete: "确认删除？",
+      clearDoneMessage: "只删除当前日期已完成任务。",
+      cancel: "取消",
+      delete: "删除",
+      doneEmpty: "还没有完成的任务。",
+      recent: "最近记录",
+      recentEmpty: "还没有收工记录。",
+      dataStatusLabel: "本地数据状态",
+      dbReady: "本地 SQLite 已启用",
+      dbNotReady: "SQLite 未就绪",
+      dbPathUnavailable: "数据库路径暂不可用",
+      exportJson: "导出 JSON",
+      exportedCount: "已导出 {count} 条任务",
+      modeFloatingText: "切换到贴边小窗",
+      modeFloatingAria: "切换到贴边小窗",
+      modeNormalText: "恢复普通窗口",
+      modeNormalAria: "恢复普通窗口",
+      collapseQuickAdd: "收起",
+      collapseQuickAddAria: "收起快速记录",
+      openQuickAdd: "＋ 新增",
+      openQuickAddAria: "新增任务",
+      tauriUnavailable: "Tauri command 不可用，请在桌面应用中打开 Worknote。",
+      legacyMigrationFailed: "旧任务迁移失败，localStorage 已保留。",
+      dbInitFailed: "SQLite 初始化失败，任务暂时无法写入。",
+      addFailed: "新增任务失败。",
+      updateStatusFailed: "更新任务状态失败。",
+      deferFailed: "延后任务失败。",
+      moveTodayFailed: "移到今日失败。",
+      taskNotFound: "任务不存在，可能已被删除。",
+      restoreBeforeEdit: "已完成任务请先恢复为待办后再修改。",
+      editFailed: "修改任务失败。",
+      moveInboxFailed: "移到待安排失败。",
+      restoreFailed: "恢复任务失败。",
+      updatePriorityFailed: "更新任务优先状态失败。",
+      deleteFailed: "删除任务失败。",
+      clearDoneFailed: "清空已完成任务失败。",
+      exportFailed: "导出 JSON 失败。",
+      dbRestartRequired: "SQLite 尚未就绪，请重启应用后再试。",
+      uncompleteTask: "取消完成",
+      completeTask: "标记完成",
+      deleteTask: "删除任务",
+      deleteTaskMessage: "删除后不会进入已完成记录。",
+      tomorrow: "明天",
+      nextDay: "次日",
+      todoAction: "待办",
+      restoreCurrent: "恢复为当前日期待办",
+      restoreNext: "恢复到{label}待办",
+      moveNextFailed: "移到{label}失败。",
+      unscheduled: "待安排",
+      restoreUnscheduled: "恢复到待安排",
+      deferNext: "延后到{label}",
+      today: "今天",
+      todayAction: "今日",
+      moveToday: "移到今日",
+      moveUnscheduled: "移到待安排",
+      editTask: "修改任务",
+      edit: "修改",
+      editTaskContent: "修改任务内容",
+      save: "保存",
+      editTaskType: "修改任务类型",
+      tagHint: "标签可多选，不选即常规",
+      removePriority: "取消优先排序",
+      setPriority: "设为最高优先排序",
+      summaryCounts: "完成 {completed}，延后 {carried}",
+      unknownTime: "时间未知",
+    },
+    en: {
+      edgeLogoExpand: "Expand the Worknote side window",
+      languageToEnglish: "Switch to English",
+      languageToChinese: "Switch to Chinese",
+      goToday: "Today",
+      datePickerLabel: "Choose a date",
+      previousMonth: "Previous month",
+      nextMonth: "Next month",
+      weekdayMon: "Mon",
+      weekdayTue: "Tue",
+      weekdayWed: "Wed",
+      weekdayThu: "Thu",
+      weekdayFri: "Fri",
+      weekdaySat: "Sat",
+      weekdaySun: "Sun",
+      statsLabel: "Selected date tasks and add",
+      todoLabel: "To do",
+      doneLabel: "Done",
+      addTaskLabel: "Add task",
+      quickRecord: "Quick add",
+      inputTodayTask: "Add a task for today",
+      inputSelectedTask: "Add a task for {date}",
+      add: "Add",
+      taskTagsLabel: "Task labels; choose any",
+      taskTagsHint: "Task labels · choose any, or leave blank",
+      priority: "Priority",
+      urgent: "Urgent",
+      important: "Important",
+      todayTasks: "Today's tasks",
+      selectedDateTasks: "Tasks for {date}",
+      tomorrowTasks: "Tomorrow",
+      nextDayTasks: "Next day",
+      todayEmpty: "No tasks for today.",
+      selectedDateEmpty: "No tasks for {date}.",
+      tomorrowEmpty: "Nothing planned for tomorrow.",
+      nextDayEmpty: "Nothing planned for the next day.",
+      inbox: "Unscheduled",
+      inboxEmpty: "No unscheduled tasks.",
+      completed: "Completed",
+      clear: "Clear",
+      confirmDelete: "Delete these tasks?",
+      clearDoneMessage: "Only completed tasks for this date will be deleted.",
+      cancel: "Cancel",
+      delete: "Delete",
+      doneEmpty: "No completed tasks yet.",
+      recent: "Recent activity",
+      recentEmpty: "No daily summaries yet.",
+      dataStatusLabel: "Local data status",
+      dbReady: "Local SQLite is ready",
+      dbNotReady: "SQLite is not ready",
+      dbPathUnavailable: "Database path is unavailable",
+      exportJson: "Export JSON",
+      exportedCount: "Exported {count} tasks",
+      modeFloatingText: "Side window",
+      modeFloatingAria: "Switch to the side window",
+      modeNormalText: "Normal window",
+      modeNormalAria: "Restore the normal window",
+      collapseQuickAdd: "Collapse",
+      collapseQuickAddAria: "Collapse quick add",
+      openQuickAdd: "＋ Add",
+      openQuickAddAria: "Add task",
+      tauriUnavailable: "Tauri command is unavailable. Open Worknote in the desktop app.",
+      legacyMigrationFailed: "Legacy task migration failed. localStorage was kept.",
+      dbInitFailed: "SQLite could not start. Tasks are temporarily read-only.",
+      addFailed: "Could not add the task.",
+      updateStatusFailed: "Could not update the task status.",
+      deferFailed: "Could not move the task forward.",
+      moveTodayFailed: "Could not move the task to today.",
+      taskNotFound: "This task no longer exists.",
+      restoreBeforeEdit: "Restore this completed task before editing it.",
+      editFailed: "Could not update the task.",
+      moveInboxFailed: "Could not move the task to Unscheduled.",
+      restoreFailed: "Could not restore the task.",
+      updatePriorityFailed: "Could not update priority.",
+      deleteFailed: "Could not delete the task.",
+      clearDoneFailed: "Could not clear completed tasks.",
+      exportFailed: "Could not export JSON.",
+      dbRestartRequired: "SQLite is not ready. Restart Worknote and try again.",
+      uncompleteTask: "Mark as incomplete",
+      completeTask: "Mark as complete",
+      deleteTask: "Delete task",
+      deleteTaskMessage: "Deleted tasks will not appear in completed activity.",
+      tomorrow: "Tomorrow",
+      nextDay: "Next day",
+      todoAction: "To do",
+      restoreCurrent: "Restore as a task for the selected date",
+      restoreNext: "Restore for {label}",
+      moveNextFailed: "Could not move the task to {label}.",
+      unscheduled: "Unscheduled",
+      restoreUnscheduled: "Restore to Unscheduled",
+      deferNext: "Move to {label}",
+      today: "Today",
+      todayAction: "Today",
+      moveToday: "Move to today",
+      moveUnscheduled: "Move to Unscheduled",
+      editTask: "Edit task",
+      edit: "Edit",
+      editTaskContent: "Edit task content",
+      save: "Save",
+      editTaskType: "Edit task labels",
+      tagHint: "Choose any labels, or leave blank",
+      removePriority: "Remove top priority",
+      setPriority: "Move to top priority",
+      summaryCounts: "Completed {completed}, carried over {carried}",
+      unknownTime: "Time unknown",
+    },
   };
 
   const initialDateKey = getTodayDateKey();
@@ -68,6 +283,10 @@
     hasManualHistoricalDateSelection: false,
     newTaskPriority: "normal",
     newTaskIsPrioritized: false,
+    quickAddExpanded: false,
+    quickAddSelectionKey: null,
+    quickAddTaskCount: null,
+    language: loadLanguage(),
   };
 
   const elements = {
@@ -84,6 +303,10 @@
     doneCount: document.getElementById("doneCount"),
     taskInput: document.getElementById("taskInput"),
     addButton: document.getElementById("addButton"),
+    quickAddSection: document.getElementById("quickAddSection"),
+    quickAddToggleButton: document.getElementById("quickAddToggleButton"),
+    languageButton: document.getElementById("languageButton"),
+    languageChoices: document.querySelectorAll("[data-language-choice]"),
     priorityOptions: document.querySelectorAll("[data-task-priority]"),
     prioritizedOption: document.querySelector("[data-task-prioritized]"),
     windowModeButton: document.getElementById("windowModeButton"),
@@ -114,10 +337,60 @@
   function invokeCommand(command, args) {
     const invoke = window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke;
     if (typeof invoke !== "function") {
-      return Promise.reject(new Error("Tauri command 不可用，请在桌面应用中打开工作日志。"));
+      return Promise.reject(new Error(t("tauriUnavailable")));
     }
 
     return invoke(command, args);
+  }
+
+  function loadLanguage() {
+    return localStorage.getItem(LANGUAGE_STORAGE_KEY) === "en" ? "en" : "zh";
+  }
+
+  function t(key, values = {}) {
+    const languageTable = TRANSLATIONS[state.language] || TRANSLATIONS.zh;
+    const template = languageTable[key] || TRANSLATIONS.zh[key] || key;
+    return template.replace(/\{(\w+)\}/g, (match, name) =>
+      Object.prototype.hasOwnProperty.call(values, name) ? String(values[name]) : match
+    );
+  }
+
+  function applyStaticTranslations() {
+    document.documentElement.lang = state.language === "en" ? "en" : "zh-CN";
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+      element.textContent = t(element.dataset.i18n);
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach((element) => {
+      element.setAttribute("aria-label", t(element.dataset.i18nAria));
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+      element.setAttribute("placeholder", t(element.dataset.i18nPlaceholder));
+    });
+    elements.languageChoices.forEach((choice) => {
+      choice.classList.toggle("is-active", choice.dataset.languageChoice === state.language);
+    });
+    const languageLabel = state.language === "en" ? t("languageToChinese") : t("languageToEnglish");
+    elements.languageButton.setAttribute("aria-label", languageLabel);
+    elements.languageButton.setAttribute("title", languageLabel);
+    renderWindowModeButton();
+  }
+
+  function toggleLanguage() {
+    state.language = state.language === "zh" ? "en" : "zh";
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, state.language);
+    clearDataError();
+    elements.exportMessage.textContent = "";
+    applyStaticTranslations();
+    render();
+    renderRecentSummaries();
+    renderDataStatus();
+    syncNativeLanguage();
+  }
+
+  function syncNativeLanguage() {
+    invokeCommand("set_app_language", { language: state.language }).catch((error) => {
+      console.error("同步应用语言失败。", error);
+    });
   }
 
   function loadLegacyTasks() {
@@ -219,7 +492,7 @@
       console.info("V0.1 localStorage 任务已迁移到 SQLite。", result);
       return await invokeCommand("get_tasks");
     } catch (error) {
-      showDataError("旧任务迁移失败，localStorage 已保留。");
+      showDataError(t("legacyMigrationFailed"));
       console.error("V0.1 localStorage 任务迁移失败。", error);
       return sqliteTasks;
     }
@@ -237,7 +510,7 @@
       state.dbReady = false;
       state.tasks = [];
       state.summaries = [];
-      showDataError("SQLite 初始化失败，任务暂时无法写入。");
+      showDataError(t("dbInitFailed"));
       console.error("SQLite 初始化失败。", error);
       render();
       renderRecentSummaries();
@@ -299,9 +572,10 @@
       elements.taskInput.value = "";
       state.newTaskIsPrioritized = false;
       selectNewTaskPriority("normal");
+      state.quickAddExpanded = false;
       await refreshTasks();
-      elements.taskInput.focus();
-    }, "新增任务失败。");
+      window.setTimeout(() => elements.quickAddToggleButton.focus(), 0);
+    }, t("addFailed"));
   }
 
   function selectNewTaskPriority(priority) {
@@ -372,7 +646,7 @@
     state.windowMode = isFloating ? "floating" : "normal";
     localStorage.setItem(UI_MODE_STORAGE_KEY, state.windowMode);
     document.body.classList.toggle("is-floating-mode", isFloating);
-    elements.windowModeButton.textContent = isFloating ? "普通" : "浮窗";
+    renderWindowModeButton();
     elements.windowModeButton.setAttribute("aria-pressed", String(isFloating));
     if (!isFloating) {
       state.isEdgeCollapsed = false;
@@ -382,6 +656,15 @@
       resetEdgeIdleTimer();
     }
     applyEdgeCollapsedClass();
+  }
+
+  function renderWindowModeButton() {
+    const isFloating = state.windowMode === "floating";
+    const textKey = isFloating ? "modeNormalText" : "modeFloatingText";
+    const ariaKey = isFloating ? "modeNormalAria" : "modeFloatingAria";
+    elements.windowModeButton.textContent = t(textKey);
+    elements.windowModeButton.setAttribute("aria-label", t(ariaKey));
+    elements.windowModeButton.setAttribute("title", t(ariaKey));
   }
 
   async function syncWindowMode() {
@@ -807,15 +1090,15 @@
     await runDataAction(async () => {
       await patchTaskCompleted(id);
       await refreshTasks();
-    }, "更新任务状态失败。");
+    }, t("updateStatusFailed"));
   }
 
   async function moveTaskToTomorrow(id) {
-    await moveTaskToDate(id, nextDate(state.selectedDate), "延后任务失败。");
+    await moveTaskToDate(id, nextDate(state.selectedDate), t("deferFailed"));
   }
 
   async function moveTaskToToday(id) {
-    await moveTaskToDate(id, todayDate(), "移到今日失败。");
+    await moveTaskToDate(id, todayDate(), t("moveTodayFailed"));
   }
 
   function findTaskById(id) {
@@ -828,13 +1111,13 @@
     clearDataError();
     const task = findTaskById(id);
     if (!task) {
-      showDataError("任务不存在，可能已被删除。");
+      showDataError(t("taskNotFound"));
       resetEdgeIdleTimer();
       return;
     }
 
     if (isTaskCompleted(task)) {
-      showDataError("已完成任务请先恢复为代办后再修改。");
+      showDataError(t("restoreBeforeEdit"));
       resetEdgeIdleTimer();
       return;
     }
@@ -869,13 +1152,13 @@
   async function saveEditTaskTitle(id) {
     const task = findTaskById(id);
     if (!task) {
-      showDataError("任务不存在，可能已被删除。");
+      showDataError(t("taskNotFound"));
       cancelEditTaskTitle();
       return;
     }
 
     if (isTaskCompleted(task)) {
-      showDataError("已完成任务请先恢复为代办后再修改。");
+      showDataError(t("restoreBeforeEdit"));
       cancelEditTaskTitle();
       return;
     }
@@ -908,7 +1191,7 @@
       state.editingTaskId = null;
       state.isEditingTask = false;
       await refreshTasks();
-    }, "修改任务失败。");
+    }, t("editFailed"));
   }
 
   async function moveTaskToDate(id, plannedDate, errorMessage) {
@@ -929,14 +1212,14 @@
     cancelDeleteTask();
     const task = state.tasks.find((item) => item.id === id);
     if (task && isTaskCompleted(task)) {
-      await restoreTaskToInbox(id, "移到待安排失败。");
+      await restoreTaskToInbox(id, t("moveInboxFailed"));
       return;
     }
 
     await runDataAction(async () => {
       await patchTaskUnscheduled(id);
       await refreshTasks();
-    }, "移到待安排失败。");
+    }, t("moveInboxFailed"));
   }
 
   async function restoreTaskToDate(id, plannedDate, errorMessage, switchToDate) {
@@ -963,7 +1246,7 @@
     await runDataAction(async () => {
       await patchTaskSchedule(task.id, getTaskDate(task));
       await refreshTasks();
-    }, "恢复任务失败。");
+    }, t("restoreFailed"));
   }
 
   async function patchTaskCompleted(id) {
@@ -1008,7 +1291,7 @@
         updatedAt: new Date().toISOString(),
       });
       await refreshTasks();
-    }, "更新任务优先状态失败。");
+    }, t("updatePriorityFailed"));
   }
 
   function requestDeleteTask(id) {
@@ -1034,7 +1317,7 @@
       await invokeCommand("delete_task", { id });
       state.pendingDeleteTaskId = null;
       await refreshTasks();
-    }, "删除任务失败。");
+    }, t("deleteFailed"));
   }
 
   function requestClearDoneTasks() {
@@ -1056,22 +1339,22 @@
       await invokeCommand("clear_done_tasks", { date: state.selectedDate });
       state.clearDoneConfirmVisible = false;
       await refreshTasks();
-    }, "清空已完成任务失败。");
+    }, t("clearDoneFailed"));
   }
 
   async function exportTasksJson() {
     elements.exportMessage.textContent = "";
     await runDataAction(async () => {
       const result = await invokeCommand("export_tasks_json");
-      elements.exportMessage.textContent = `已导出 ${result.taskCount} 条任务`;
+      elements.exportMessage.textContent = t("exportedCount", { count: result.taskCount });
       elements.exportMessage.title = result.filePath;
       await refreshDataInfo();
-    }, "导出 JSON 失败。");
+    }, t("exportFailed"));
   }
 
   async function runDataAction(action, errorMessage) {
-    if (!state.dbReady && errorMessage !== "SQLite 初始化失败，任务暂时无法写入。") {
-      showDataError("SQLite 尚未就绪，请重启应用后再试。");
+    if (!state.dbReady && errorMessage !== t("dbInitFailed")) {
+      showDataError(t("dbRestartRequired"));
       return;
     }
 
@@ -1096,16 +1379,23 @@
   function render() {
     ensureDateFreshOnOpen("render", { render: false });
     const grouped = groupTasks();
+    syncQuickAddState(grouped.todayTodo.length + grouped.todayDone.length);
     const selectedLabel = formatMonthDay(state.selectedDate);
     const selectedIsToday = isSelectedToday();
 
     elements.todoCount.textContent = String(grouped.todayTodo.length);
     elements.doneCount.textContent = String(grouped.todayDone.length);
-    elements.todayTitle.textContent = selectedIsToday ? "今日任务" : `${selectedLabel}任务`;
-    elements.tomorrowTitle.textContent = selectedIsToday ? "明日任务" : "次日任务";
-    elements.todayEmpty.textContent = selectedIsToday ? "今天还没有待办。" : `${selectedLabel}还没有待办。`;
-    elements.tomorrowEmpty.textContent = selectedIsToday ? "明天还没有安排。" : "次日还没有安排。";
-    elements.taskInput.placeholder = selectedIsToday ? "输入今日任务" : `输入${selectedLabel}任务`;
+    elements.todayTitle.textContent = selectedIsToday
+      ? t("todayTasks")
+      : t("selectedDateTasks", { date: selectedLabel });
+    elements.tomorrowTitle.textContent = selectedIsToday ? t("tomorrowTasks") : t("nextDayTasks");
+    elements.todayEmpty.textContent = selectedIsToday
+      ? t("todayEmpty")
+      : t("selectedDateEmpty", { date: selectedLabel });
+    elements.tomorrowEmpty.textContent = selectedIsToday ? t("tomorrowEmpty") : t("nextDayEmpty");
+    elements.taskInput.placeholder = selectedIsToday
+      ? t("inputTodayTask")
+      : t("inputSelectedTask", { date: selectedLabel });
 
     renderList(elements.todayList, grouped.todayTodo, "today");
     renderList(elements.tomorrowList, grouped.tomorrowTodo, "tomorrow");
@@ -1209,15 +1499,63 @@
     return getTaskDate(task);
   }
 
+  function syncQuickAddState(taskCount) {
+    if (!state.dbReady) {
+      return;
+    }
+
+    const selectionChanged = state.quickAddSelectionKey !== state.selectedDate;
+    const emptyStateChanged =
+      state.quickAddTaskCount !== null && (state.quickAddTaskCount === 0) !== (taskCount === 0);
+
+    if (selectionChanged || emptyStateChanged || state.quickAddTaskCount === null) {
+      state.quickAddExpanded = taskCount === 0;
+    }
+
+    state.quickAddSelectionKey = state.selectedDate;
+    state.quickAddTaskCount = taskCount;
+  }
+
+  function setQuickAddExpanded(expanded, options = {}) {
+    state.quickAddExpanded = expanded;
+    renderControls();
+
+    window.setTimeout(() => {
+      if (options.focusInput && expanded) {
+        elements.taskInput.focus();
+      } else if (options.focusToggle) {
+        elements.quickAddToggleButton.focus();
+      }
+    }, 0);
+  }
+
+  function toggleQuickAdd() {
+    setQuickAddExpanded(!state.quickAddExpanded, {
+      focusInput: !state.quickAddExpanded,
+      focusToggle: state.quickAddExpanded,
+    });
+  }
+
   function renderControls() {
     const doneTasks = getSelectedDoneTasks();
     const selectedIsToday = isSelectedToday();
     elements.addButton.disabled = state.busy || !state.dbReady;
     elements.taskInput.disabled = state.busy || !state.dbReady;
+    elements.quickAddToggleButton.disabled = state.busy || !state.dbReady;
+    elements.quickAddToggleButton.textContent = state.quickAddExpanded
+      ? t("collapseQuickAdd")
+      : t("openQuickAdd");
+    elements.quickAddToggleButton.setAttribute("aria-expanded", String(state.quickAddExpanded));
+    elements.quickAddToggleButton.setAttribute(
+      "aria-label",
+      state.quickAddExpanded ? t("collapseQuickAddAria") : t("openQuickAddAria")
+    );
+    elements.quickAddSection.hidden = !state.quickAddExpanded;
     elements.priorityOptions.forEach((button) => {
       button.disabled = state.busy || !state.dbReady;
     });
     elements.prioritizedOption.disabled = state.busy || !state.dbReady;
+    elements.languageButton.disabled = state.busy || state.isEditingTask;
     elements.windowModeButton.disabled = state.windowModeBusy;
     elements.clearDoneButton.disabled = state.busy || !state.dbReady || doneTasks.length === 0;
     elements.confirmClearDoneButton.disabled = state.busy || !state.dbReady || doneTasks.length === 0;
@@ -1356,12 +1694,12 @@
   }
 
   function renderDataStatus() {
-    elements.dataStatus.textContent = state.dbReady ? "本地 SQLite 已启用" : "SQLite 未就绪";
+    elements.dataStatus.textContent = state.dbReady ? t("dbReady") : t("dbNotReady");
     if (state.dataInfo && state.dataInfo.databasePath) {
       elements.databasePath.textContent = state.dataInfo.databasePath;
       elements.databasePath.title = state.dataInfo.databasePath;
     } else {
-      elements.databasePath.textContent = "数据库路径暂不可用";
+      elements.databasePath.textContent = t("dbPathUnavailable");
       elements.databasePath.removeAttribute("title");
     }
     renderControls();
@@ -1393,7 +1731,7 @@
     const checkButton = document.createElement("button");
     checkButton.type = "button";
     checkButton.className = "task-check";
-    checkButton.setAttribute("aria-label", completed ? "取消完成" : "标记完成");
+    checkButton.setAttribute("aria-label", completed ? t("uncompleteTask") : t("completeTask"));
     checkButton.setAttribute("aria-pressed", String(completed));
     checkButton.disabled = state.busy || !state.dbReady;
     if (completed) {
@@ -1432,7 +1770,7 @@
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
     deleteButton.className = "delete-button";
-    deleteButton.setAttribute("aria-label", "删除任务");
+    deleteButton.setAttribute("aria-label", t("deleteTask"));
     deleteButton.textContent = "×";
     deleteButton.disabled = state.busy || !state.dbReady;
     deleteButton.addEventListener("click", () => requestDeleteTask(task.id));
@@ -1445,22 +1783,22 @@
 
       const copy = document.createElement("div");
       const heading = document.createElement("strong");
-      heading.textContent = "确认删除？";
+      heading.textContent = t("confirmDelete");
       const message = document.createElement("span");
-      message.textContent = "删除后不会进入已完成记录。";
+      message.textContent = t("deleteTaskMessage");
       copy.append(heading, message);
 
       const cancelButton = document.createElement("button");
       cancelButton.type = "button";
       cancelButton.className = "mini-button secondary delete-confirm-button";
-      cancelButton.textContent = "取消";
+      cancelButton.textContent = t("cancel");
       cancelButton.disabled = state.busy || !state.dbReady;
       cancelButton.addEventListener("click", cancelDeleteTask);
 
       const confirmButton = document.createElement("button");
       confirmButton.type = "button";
       confirmButton.className = "mini-button danger delete-confirm-button";
-      confirmButton.textContent = "删除";
+      confirmButton.textContent = t("delete");
       confirmButton.disabled = state.busy || !state.dbReady;
       confirmButton.addEventListener("click", () => confirmDeleteTask(task.id));
 
@@ -1474,26 +1812,32 @@
   function appendTaskActions(actions, task, section) {
     if (section === "done") {
       const next = nextDate(state.selectedDate);
-      const nextLabel = isSelectedToday() ? "明天" : "次日";
-      actions.appendChild(createActionButton("代办", "恢复为当前日期代办", () => restoreTaskToDate(task.id, state.selectedDate, "恢复任务失败。")));
-      actions.appendChild(createActionButton(nextLabel, `恢复到${nextLabel}代办`, () => restoreTaskToDate(task.id, next, `移到${nextLabel}失败。`, next)));
-      actions.appendChild(createActionButton("待安排", "恢复到待安排", () => restoreTaskToInbox(task.id, "移到待安排失败。")));
+      const nextLabel = isSelectedToday() ? t("tomorrow") : t("nextDay");
+      actions.appendChild(createActionButton(t("todoAction"), t("restoreCurrent"), () =>
+        restoreTaskToDate(task.id, state.selectedDate, t("restoreFailed"))
+      ));
+      actions.appendChild(createActionButton(nextLabel, t("restoreNext", { label: nextLabel }), () =>
+        restoreTaskToDate(task.id, next, t("moveNextFailed", { label: nextLabel }), next)
+      ));
+      actions.appendChild(createActionButton(t("unscheduled"), t("restoreUnscheduled"), () =>
+        restoreTaskToInbox(task.id, t("moveInboxFailed"))
+      ));
       return;
     }
 
     actions.appendChild(createPriorityToggleButton(task));
 
     if (section !== "tomorrow") {
-      const nextLabel = isSelectedToday() ? "明天" : "次日";
-      actions.appendChild(createActionButton(nextLabel, `延后到${nextLabel}`, () => moveTaskToTomorrow(task.id)));
+      const nextLabel = isSelectedToday() ? t("tomorrow") : t("nextDay");
+      actions.appendChild(createActionButton(nextLabel, t("deferNext", { label: nextLabel }), () => moveTaskToTomorrow(task.id)));
     }
 
     if (section !== "today") {
-      actions.appendChild(createActionButton("今日", "移到今日", () => moveTaskToToday(task.id)));
+      actions.appendChild(createActionButton(t("todayAction"), t("moveToday"), () => moveTaskToToday(task.id)));
     }
 
     if (section !== "inbox") {
-      actions.appendChild(createActionButton("待安排", "移到待安排", () => moveTaskToInbox(task.id)));
+      actions.appendChild(createActionButton(t("unscheduled"), t("moveUnscheduled"), () => moveTaskToInbox(task.id)));
     }
   }
 
@@ -1501,8 +1845,8 @@
     const button = document.createElement("button");
     button.type = "button";
     button.className = "task-edit-button";
-    button.setAttribute("aria-label", "修改任务");
-    button.textContent = "修改";
+    button.setAttribute("aria-label", t("editTask"));
+    button.textContent = t("edit");
     button.disabled = state.busy || !state.dbReady;
     button.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -1521,7 +1865,7 @@
     input.maxLength = 120;
     input.value = task.title;
     input.dataset.editTaskId = task.id;
-    input.setAttribute("aria-label", "修改任务内容");
+    input.setAttribute("aria-label", t("editTaskContent"));
     input.disabled = state.busy || !state.dbReady;
     input.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
@@ -1538,7 +1882,7 @@
     const saveButton = document.createElement("button");
     saveButton.type = "button";
     saveButton.className = "task-edit-save";
-    saveButton.textContent = "保存";
+    saveButton.textContent = t("save");
     saveButton.disabled = state.busy || !state.dbReady;
     saveButton.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -1548,7 +1892,7 @@
     const cancelButton = document.createElement("button");
     cancelButton.type = "button";
     cancelButton.className = "task-edit-cancel";
-    cancelButton.textContent = "取消";
+    cancelButton.textContent = t("cancel");
     cancelButton.disabled = state.busy;
     cancelButton.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -1564,19 +1908,19 @@
     const picker = document.createElement("div");
     picker.className = "task-edit-priority-row";
     picker.setAttribute("role", "group");
-    picker.setAttribute("aria-label", "修改任务类型");
+    picker.setAttribute("aria-label", t("editTaskType"));
 
     const currentPriority = getTaskPriority(task);
     const hint = document.createElement("span");
     hint.className = "task-edit-priority-hint";
-    hint.textContent = "标签可多选，不选即常规";
+    hint.textContent = t("tagHint");
     picker.appendChild(hint);
 
     TASK_PRIORITY_TAGS.forEach((priority) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "task-edit-priority";
-      button.textContent = TASK_PRIORITY_LABELS[priority];
+      button.textContent = t(TASK_PRIORITY_LABEL_KEYS[priority]);
       button.dataset.editPriority = priority;
       button.dataset.editPriorityId = task.id;
       button.disabled = state.busy || !state.dbReady;
@@ -1599,7 +1943,7 @@
     return taskPriorityTags(getTaskPriority(task)).map((priority) => {
       const badge = document.createElement("span");
       badge.className = `task-priority-badge is-${priority}`;
-      badge.textContent = TASK_PRIORITY_LABELS[priority];
+      badge.textContent = t(TASK_PRIORITY_LABEL_KEYS[priority]);
       return badge;
     });
   }
@@ -1614,8 +1958,8 @@
   function createPriorityToggleButton(task) {
     const active = isTaskPrioritized(task);
     const button = createActionButton(
-      "优先",
-      active ? "取消优先排序" : "设为最高优先排序",
+      t("priority"),
+      active ? t("removePriority") : t("setPriority"),
       () => toggleTaskPrioritized(task)
     );
     button.classList.toggle("is-priority-active", active);
@@ -1646,7 +1990,10 @@
       date.textContent = formatSummaryDate(summary.date);
 
       const counts = document.createElement("strong");
-      counts.textContent = `完成 ${summary.completedCount}，延后 ${summary.carriedCount}`;
+      counts.textContent = t("summaryCounts", {
+        completed: summary.completedCount,
+        carried: summary.carriedCount,
+      });
 
       item.append(date, counts);
       fragment.appendChild(item);
@@ -1899,9 +2246,16 @@
 
   function formatSelectedDate(dateString) {
     const date = parseDateInput(dateString);
+    if (state.language === "en") {
+      const monthDay = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date);
+      const weekday = new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(date);
+      const label = `${monthDay}, ${weekday}`;
+      return dateString === getTodayDateKey() ? `${label} · ${t("today")}` : label;
+    }
+
     const weekday = new Intl.DateTimeFormat("zh-CN", { weekday: "long" }).format(date);
     const label = `${date.getMonth() + 1}月${date.getDate()}日 ${weekday}`;
-    return dateString === getTodayDateKey() ? `${label} · 今天` : label;
+    return dateString === getTodayDateKey() ? `${label} · ${t("today")}` : label;
   }
 
   function getTodayDateKey() {
@@ -1978,18 +2332,24 @@
   }
 
   function formatMonthTitle(date) {
+    if (state.language === "en") {
+      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long" }).format(date);
+    }
     return `${date.getFullYear()}年${date.getMonth() + 1}月`;
   }
 
   function formatMonthDay(dateString) {
     const date = parseDateInput(dateString);
+    if (state.language === "en") {
+      return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date);
+    }
     return `${date.getMonth() + 1}月${date.getDate()}日`;
   }
 
   function formatTaskCreatedAt(value) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) {
-      return "时间未知";
+      return t("unknownTime");
     }
 
     const year = date.getFullYear();
@@ -1997,6 +2357,14 @@
     const day = date.getDate();
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
+    if (state.language === "en") {
+      const dateLabel = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      }).format(date);
+      return `${dateLabel} ${hours}:${minutes}`;
+    }
     return `${year}年${month}月${day}日 ${hours}:${minutes}`;
   }
 
@@ -2006,6 +2374,11 @@
       return date;
     }
 
+    if (state.language === "en") {
+      return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
+        parseDateInput(date)
+      );
+    }
     return `${Number(parts[1])}月${Number(parts[2])}日`;
   }
 
@@ -2106,12 +2479,19 @@
     elements.prevMonthButton.addEventListener("click", () => moveCalendarMonth(-1));
     elements.nextMonthButton.addEventListener("click", () => moveCalendarMonth(1));
     elements.goTodayButton.addEventListener("click", selectToday);
+    elements.languageButton.addEventListener("click", toggleLanguage);
+    elements.quickAddToggleButton.addEventListener("click", toggleQuickAdd);
     elements.addButton.addEventListener("click", addTask);
     elements.prioritizedOption.addEventListener("click", toggleNewTaskPrioritized);
     elements.priorityOptions.forEach((button) => {
       button.addEventListener("click", () => selectNewTaskPriority(button.dataset.taskPriority));
     });
     elements.taskInput.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setQuickAddExpanded(false, { focusToggle: true });
+        return;
+      }
       if (event.key === "Enter") {
         addTask();
       }
@@ -2160,16 +2540,20 @@
     ensureDateFreshOnOpen("init", { forceToday: true, render: false });
     state.calendarViewDate = firstDayOfMonth(parseDateInput(state.selectedDate));
     bindEvents();
+    applyStaticTranslations();
     render();
     renderRecentSummaries();
     renderClearDoneConfirm();
     renderDataStatus();
     initializeWindowMode();
+    syncNativeLanguage();
     scheduleDailyBackupCheck();
     scheduleDateRefreshCheck();
     initializeData().then(() => {
       ensureDateFreshOnOpen("init-complete", { allowAutoToday: true });
-      elements.taskInput.focus();
+      if (state.quickAddExpanded) {
+        elements.taskInput.focus();
+      }
     });
   }
 

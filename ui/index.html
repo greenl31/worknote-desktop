@@ -3,23 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>工作日志 Worknote</title>
+    <title>Worknote</title>
     <link rel="icon" href="./logo.png" />
-    <link rel="stylesheet" href="./styles.css?v=public-v050" />
+    <link rel="stylesheet" href="./styles.css?v=header-layout-v2" />
   </head>
   <body>
-    <button class="edge-logo-tab" id="edgeLogoTab" type="button" aria-label="展开工作日志浮窗">
+    <button
+      class="edge-logo-tab"
+      id="edgeLogoTab"
+      type="button"
+      aria-label="展开工作日志浮窗"
+      data-i18n-aria="edgeLogoExpand"
+    >
       <img src="./logo.png" alt="" aria-hidden="true" />
     </button>
     <main class="app-shell">
       <header class="topbar">
         <div class="brand-area">
-          <div class="brand-row">
-            <div class="brand-title">
-              <img class="brand-logo" src="./logo.png" alt="" aria-hidden="true" />
-              <h1>工作日志</h1>
-            </div>
-            <button class="mode-button" id="windowModeButton" type="button">浮窗</button>
+          <div class="brand-title">
+            <img class="brand-logo" src="./logo.png" alt="" aria-hidden="true" />
+            <h1>Worknote</h1>
+          </div>
+          <div class="header-controls">
+            <button
+              class="mode-button"
+              id="windowModeButton"
+              type="button"
+              aria-label="切换到贴边小窗"
+              title="切换到贴边小窗"
+            >
+              切换到贴边小窗
+            </button>
+            <button class="language-button" id="languageButton" type="button" aria-label="切换到英文" title="切换到英文">
+              <span class="language-choice is-active" data-language-choice="zh" aria-hidden="true">中</span>
+              <span class="language-divider" aria-hidden="true">/</span>
+              <span class="language-choice" data-language-choice="en" aria-hidden="true">EN</span>
+            </button>
           </div>
           <div class="date-picker-wrap" id="datePickerWrap">
             <button
@@ -31,55 +50,65 @@
             >
               <strong id="selectedDateText">今天</strong>
             </button>
-            <button class="calendar-today-button" id="goTodayButton" type="button" hidden>回到今天</button>
-            <div class="calendar-popover" id="datePicker" role="dialog" aria-label="月份日期选择">
+            <button class="calendar-today-button" id="goTodayButton" type="button" data-i18n="goToday" hidden>回到今天</button>
+            <div class="calendar-popover" id="datePicker" role="dialog" aria-label="月份日期选择" data-i18n-aria="datePickerLabel">
               <div class="calendar-head">
-                <button class="calendar-nav-button" id="prevMonthButton" type="button" aria-label="上个月">‹</button>
+                <button class="calendar-nav-button" id="prevMonthButton" type="button" aria-label="上个月" data-i18n-aria="previousMonth">‹</button>
                 <p class="calendar-title" id="calendarTitle">2026年6月</p>
-                <button class="calendar-nav-button" id="nextMonthButton" type="button" aria-label="下个月">›</button>
+                <button class="calendar-nav-button" id="nextMonthButton" type="button" aria-label="下个月" data-i18n-aria="nextMonth">›</button>
               </div>
               <div class="calendar-weekdays" aria-hidden="true">
-                <span>一</span>
-                <span>二</span>
-                <span>三</span>
-                <span>四</span>
-                <span>五</span>
-                <span>六</span>
-                <span>日</span>
+                <span data-i18n="weekdayMon">一</span>
+                <span data-i18n="weekdayTue">二</span>
+                <span data-i18n="weekdayWed">三</span>
+                <span data-i18n="weekdayThu">四</span>
+                <span data-i18n="weekdayFri">五</span>
+                <span data-i18n="weekdaySat">六</span>
+                <span data-i18n="weekdaySun">日</span>
               </div>
               <div class="calendar-grid" id="calendarGrid"></div>
             </div>
           </div>
         </div>
         <div class="top-actions">
-          <div class="stats" aria-label="今日任务统计">
+          <div class="stats" aria-label="所选日期任务统计与新增" data-i18n-aria="statsLabel">
             <div class="stat">
               <span id="todoCount">0</span>
-              <small>未完成</small>
+              <small data-i18n="todoLabel">未完成</small>
             </div>
             <div class="stat">
               <span id="doneCount">0</span>
-              <small>已完成</small>
+              <small data-i18n="doneLabel">已完成</small>
             </div>
+            <button
+              class="quick-add-toggle"
+              id="quickAddToggleButton"
+              type="button"
+              aria-controls="quickAddSection"
+              aria-expanded="false"
+              aria-label="新增任务"
+            >
+              ＋ 新增
+            </button>
           </div>
         </div>
       </header>
 
-      <section class="quick-add" aria-label="新增任务">
-        <label for="taskInput">快速记录</label>
+      <section class="quick-add" id="quickAddSection" aria-label="新增任务" data-i18n-aria="addTaskLabel" hidden>
+        <label for="taskInput" data-i18n="quickRecord">快速记录</label>
         <div class="input-row">
-          <input id="taskInput" type="text" maxlength="120" autocomplete="off" placeholder="输入今日任务" />
-          <button id="addButton" type="button">新增</button>
+          <input id="taskInput" type="text" maxlength="120" autocomplete="off" placeholder="输入今日任务" data-i18n-placeholder="inputTodayTask" />
+          <button id="addButton" type="button" data-i18n="add">新增</button>
         </div>
-        <div class="priority-picker" role="group" aria-label="任务标签，可多选">
-          <span class="priority-picker-hint">任务标签 · 可多选，不选即常规</span>
-          <button class="priority-option" type="button" data-task-prioritized aria-pressed="false">
+        <div class="priority-picker" role="group" aria-label="任务标签，可多选" data-i18n-aria="taskTagsLabel">
+          <span class="priority-picker-hint" data-i18n="taskTagsHint">任务标签 · 可多选，不选即常规</span>
+          <button class="priority-option" type="button" data-task-prioritized aria-pressed="false" data-i18n="priority">
             优先
           </button>
-          <button class="priority-option" type="button" data-task-priority="urgent" aria-pressed="false">
+          <button class="priority-option" type="button" data-task-priority="urgent" aria-pressed="false" data-i18n="urgent">
             紧急
           </button>
-          <button class="priority-option" type="button" data-task-priority="important" aria-pressed="false">
+          <button class="priority-option" type="button" data-task-priority="important" aria-pressed="false" data-i18n="important">
             重要
           </button>
         </div>
@@ -103,50 +132,50 @@
 
       <section class="task-section secondary-section" aria-labelledby="inboxTitle">
         <div class="section-heading">
-          <h2 id="inboxTitle">待安排</h2>
+          <h2 id="inboxTitle" data-i18n="inbox">待安排</h2>
         </div>
         <ul class="task-list compact-list" id="inboxList" aria-live="polite"></ul>
-        <p class="empty-state" id="inboxEmpty">没有待安排任务。</p>
+        <p class="empty-state" id="inboxEmpty" data-i18n="inboxEmpty">没有待安排任务。</p>
       </section>
 
       <section class="task-section done-section" aria-labelledby="doneTitle">
         <div class="section-heading">
-          <h2 id="doneTitle">已完成</h2>
-          <button class="ghost-button" id="clearDoneButton" type="button">清空</button>
+          <h2 id="doneTitle" data-i18n="completed">已完成</h2>
+          <button class="ghost-button" id="clearDoneButton" type="button" data-i18n="clear">清空</button>
         </div>
         <div class="delete-confirm clear-done-confirm" id="clearDoneConfirm" role="status">
           <div>
-            <strong>确认删除？</strong>
-            <span>只删除当前日期已完成任务。</span>
+            <strong data-i18n="confirmDelete">确认删除？</strong>
+            <span data-i18n="clearDoneMessage">只删除当前日期已完成任务。</span>
           </div>
-          <button class="mini-button secondary" id="cancelClearDoneButton" type="button">取消</button>
-          <button class="mini-button danger" id="confirmClearDoneButton" type="button">删除</button>
+          <button class="mini-button secondary" id="cancelClearDoneButton" type="button" data-i18n="cancel">取消</button>
+          <button class="mini-button danger" id="confirmClearDoneButton" type="button" data-i18n="delete">删除</button>
         </div>
         <ul class="task-list" id="doneList" aria-live="polite"></ul>
-        <p class="empty-state" id="doneEmpty">还没有完成的任务。</p>
+        <p class="empty-state" id="doneEmpty" data-i18n="doneEmpty">还没有完成的任务。</p>
       </section>
 
       <section class="task-section recent-section" aria-labelledby="recentTitle">
         <div class="section-heading">
-          <h2 id="recentTitle">最近记录</h2>
+          <h2 id="recentTitle" data-i18n="recent">最近记录</h2>
         </div>
         <ul class="summary-list" id="recentList" aria-live="polite"></ul>
-        <p class="empty-state" id="recentEmpty">还没有收工记录。</p>
+        <p class="empty-state" id="recentEmpty" data-i18n="recentEmpty">还没有收工记录。</p>
       </section>
 
-      <footer class="data-footer" aria-label="本地数据状态">
+      <footer class="data-footer" aria-label="本地数据状态" data-i18n-aria="dataStatusLabel">
         <div class="data-copy">
           <strong id="dataStatus">SQLite 未就绪</strong>
           <span id="databasePath">数据库路径暂不可用</span>
           <p class="data-error" id="dataError" role="status"></p>
         </div>
         <div class="export-area">
-          <button class="ghost-button export-button" id="exportButton" type="button">导出 JSON</button>
+          <button class="ghost-button export-button" id="exportButton" type="button" data-i18n="exportJson">导出 JSON</button>
           <span id="exportMessage" class="export-message"></span>
         </div>
       </footer>
     </main>
 
-    <script src="./app.js?v=public-v050"></script>
+    <script src="./app.js?v=header-layout-v2"></script>
   </body>
 </html>

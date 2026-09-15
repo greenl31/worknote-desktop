@@ -20,16 +20,29 @@ Worknote is a lightweight local-first work journal, todo list, daily planner, an
 - 使用 SQLite 在本地持久保存数据。
 - 自动生成本地 JSON 备份，并可手动导出数据。
 - 普通窗口、桌面浮窗和系统托盘。
+- 顶部工作区在浏览较长任务列表时保持置顶。
+- 内置「中 / EN」切换，可即时使用完整中文或英文界面。
 - 同权重任务按照添加时间从早到晚稳定排列。
 
 ## 下载
 
 前往 [Releases](https://github.com/greenl31/worknote-desktop/releases) 下载最新版：
 
-- macOS：`.dmg` 或 `.app`
+- macOS：推荐下载 `.dmg`。
+- macOS 备用包：下载 `.app.tar.gz` 后先解压，再将应用拖入“应用程序”文件夹。
 - Windows 10/11：`-setup.exe`
 
 公开版安装包由 GitHub Actions 在 macOS 和 Windows 环境分别构建。未签名的首次发行版可能触发 macOS Gatekeeper 或 Windows SmartScreen 提示，请只从本仓库的 Releases 页面下载。
+
+### macOS 安装
+
+1. 打开下载的 DMG，将“工作日志 Worknote”拖到“Applications / 应用程序”文件夹。只打开 DMG 不等于已经安装。
+2. 从访达的“应用程序”中启动。当前公开版尚未经过 Apple 公证，因此首次启动时 macOS 可能提示“Apple 无法验证”。
+3. 确认文件来自本仓库的 Releases 页面后，打开“系统设置”→“隐私与安全性”，向下滚动并点按“仍要打开”，然后在再次出现的提示中点按“打开”。
+
+成功打开一次后，macOS 会将它保存为安全性例外，后续可以正常启动。不要对来源不明的软件执行“仍要打开”。
+
+苹果官方说明：[在 Mac 上安全地打开 App](https://support.apple.com/zh-cn/102445)。
 
 ## 数据与隐私
 
@@ -57,6 +70,7 @@ cargo tauri build
 - macOS 会生成应用包和 DMG。
 - Windows 会生成 NSIS 安装程序。
 - GitHub Actions 会在每次提交时执行检查，在版本标签推送时构建双平台安装包。
+- 正式构建会重映射编译机用户目录，避免把 GitHub Runner 或本地电脑路径写入公开安装包。
 
 ## 关键词
 

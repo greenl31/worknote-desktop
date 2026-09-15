@@ -1,6 +1,6 @@
 [package]
 name = "worknote"
-version = "0.5.0"
+version = "0.5.1"
 description = "工作日志 Worknote - 本地优先的今日任务清单"
 authors = ["greenl31"]
 license = "MIT"

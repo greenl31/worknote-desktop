@@ -44,19 +44,23 @@ button {
   width: min(100vw, 560px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 24px 22px 28px;
+  padding: 0 22px 28px;
   background: var(--panel);
   box-shadow: var(--shadow);
 }
 
 .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
   gap: 12px;
-  padding-bottom: 16px;
+  padding: 16px 0;
   border-bottom: 1px solid var(--line);
+  background: var(--panel);
 }
 
 .top-actions {
@@ -68,21 +72,26 @@ button {
 
 .brand-area {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-areas:
+    "title controls"
+    "date controls";
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 12px;
+  align-items: start;
   min-width: 0;
 }
 
-.brand-row {
+.header-controls {
+  grid-area: controls;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-width: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
 }
 
 .date-picker-wrap {
+  grid-area: date;
   position: relative;
   display: flex;
   align-items: center;
@@ -272,13 +281,53 @@ h1 {
   line-height: 1.1;
   font-weight: 760;
   letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .brand-title {
+  grid-area: title;
   display: flex;
   align-items: center;
+  align-self: center;
   gap: 10px;
   min-width: 0;
+}
+
+.language-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 42px;
+  height: 26px;
+  padding: 0 5px;
+  gap: 2px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.language-button:hover {
+  border-color: #c7bcae;
+  background: #faf7f0;
+  color: var(--text);
+}
+
+.language-choice {
+  opacity: 0.48;
+}
+
+.language-choice.is-active {
+  color: var(--accent);
+  font-weight: 780;
+  opacity: 1;
+}
+
+.language-divider {
+  color: #b6aea1;
 }
 
 .brand-logo {
@@ -291,14 +340,20 @@ h1 {
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(88px, 112px));
+  grid-template-columns: repeat(2, minmax(0, 1fr)) 112px;
+  align-items: stretch;
+  width: 100%;
   gap: 8px;
-  flex: 0 0 auto;
 }
 
 .stat {
-  min-width: 64px;
-  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 10px;
+  gap: 6px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #faf7f0;
@@ -306,21 +361,45 @@ h1 {
 }
 
 .stat span {
-  display: block;
+  display: inline;
   font-size: 19px;
   line-height: 1.1;
   font-weight: 750;
 }
 
 .stat small {
-  display: block;
-  margin-top: 4px;
+  display: inline;
+  margin: 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 650;
 }
 
 .quick-add {
-  padding: 18px 0 16px;
+  padding: 14px 0 12px;
+}
+
+.quick-add[hidden] {
+  display: none;
+}
+
+.quick-add-toggle {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.quick-add-toggle[aria-expanded="true"] {
+  border: 1px solid var(--accent);
+  background: #fff;
+  color: var(--accent);
+}
+
+.quick-add-toggle[aria-expanded="true"]:hover {
+  background: #eaf3ef;
+  color: var(--accent);
 }
 
 .quick-add label {
@@ -424,13 +503,16 @@ button:hover {
 }
 
 .mode-button {
-  width: 58px;
+  width: auto;
+  min-width: 116px;
   height: 32px;
+  padding: 0 12px;
   border: 1px solid var(--line);
   background: #fff;
   color: var(--muted);
   font-size: 13px;
   font-weight: 650;
+  white-space: nowrap;
 }
 
 .mode-button:hover {
@@ -439,7 +521,7 @@ button:hover {
   color: var(--text);
 }
 
-.mode-button[aria-pressed="true"] {
+.mode-button[aria-pressed="false"] {
   border-color: var(--accent);
   background: #eaf3ef;
   color: var(--accent);
@@ -1014,7 +1096,7 @@ body.is-floating-mode {
 body.is-floating-mode .app-shell {
   width: 100vw;
   min-height: 100vh;
-  padding: 10px 12px 16px;
+  padding: 0 12px 16px;
   box-shadow: none;
 }
 
@@ -1022,18 +1104,17 @@ body.is-floating-mode .topbar {
   align-items: stretch;
   justify-content: flex-start;
   gap: 6px;
-  padding-bottom: 8px;
+  padding: 6px 0 8px;
 }
 
 body.is-floating-mode .brand-area {
-  flex: 1 1 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
   min-width: 0;
-  gap: 4px;
+  gap: 4px 8px;
 }
 
-body.is-floating-mode .brand-row {
-  align-items: center;
-  gap: 8px;
+body.is-floating-mode .header-controls {
+  gap: 4px;
 }
 
 body.is-floating-mode h1 {
@@ -1043,6 +1124,13 @@ body.is-floating-mode h1 {
 body.is-floating-mode .brand-title {
   gap: 8px;
   min-height: 36px;
+}
+
+body.is-floating-mode .language-button {
+  min-width: 40px;
+  height: 26px;
+  padding: 0 4px;
+  font-size: 10px;
 }
 
 body.is-floating-mode .brand-logo {
@@ -1102,14 +1190,16 @@ body.is-floating-mode .mode-button {
 
 body.is-floating-mode .stats {
   width: 100%;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(86px, 0.9fr);
   gap: 6px;
   margin-top: 2px;
 }
 
 body.is-floating-mode .stat {
   min-width: 0;
-  padding: 6px 8px;
+  min-height: 38px;
+  padding: 0 6px;
+  gap: 4px;
 }
 
 body.is-floating-mode .stat span {
@@ -1117,11 +1207,11 @@ body.is-floating-mode .stat span {
 }
 
 body.is-floating-mode .stat small {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 body.is-floating-mode .quick-add {
-  padding: 13px 0 9px;
+  padding: 10px 0 8px;
 }
 
 body.is-floating-mode .input-row {
@@ -1338,17 +1428,18 @@ body.edge-collapsed .edge-logo-tab img {
 
 @media (max-width: 420px) {
   .app-shell {
-    padding: 20px 16px 24px;
+    padding: 0 16px 24px;
   }
 
   .topbar {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
+    padding-top: 16px;
   }
 
   .brand-area {
-    flex: 0 1 auto;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .stats {

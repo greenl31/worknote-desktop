@@ -13,7 +13,7 @@ use std::{
 use tauri::{
     image::Image,
     menu::{Menu, MenuItem},
-    tray::TrayIconBuilder,
+    tray::{TrayIcon, TrayIconBuilder},
     window::Color,
     Emitter, LogicalPosition, LogicalSize, Manager,
 };
@@ -81,6 +81,13 @@ struct WindowModeState {
 
 struct BackupState {
     lock: Mutex<()>,
+}
+
+struct UiLanguageState {
+    toggle: MenuItem<tauri::Wry>,
+    floating: MenuItem<tauri::Wry>,
+    quit: MenuItem<tauri::Wry>,
+    tray: TrayIcon<tauri::Wry>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -181,18 +188,23 @@ fn main() {
                 lock: Mutex::new(()),
             });
 
-            let toggle =
-                MenuItem::with_id(app, TRAY_TOGGLE_ID, "显示/隐藏工作日志", true, None::<&str>)?;
+            let toggle = MenuItem::with_id(
+                app,
+                TRAY_TOGGLE_ID,
+                "显示/隐藏 Worknote",
+                true,
+                None::<&str>,
+            )?;
             let floating =
-                MenuItem::with_id(app, TRAY_FLOAT_ID, "切换浮窗模式", true, None::<&str>)?;
+                MenuItem::with_id(app, TRAY_FLOAT_ID, "切换窗口模式", true, None::<&str>)?;
             let quit = MenuItem::with_id(app, TRAY_QUIT_ID, "退出", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&toggle, &floating, &quit])?;
             let icon = Image::from_bytes(include_bytes!("../icons/icon.png"))?;
 
-            TrayIconBuilder::new()
+            let tray = TrayIconBuilder::new()
                 .icon(icon)
                 .icon_as_template(true)
-                .tooltip("工作日志")
+                .tooltip("Worknote")
                 .menu(&menu)
                 .show_menu_on_left_click(true)
                 .on_menu_event(|app, event| match event.id().as_ref() {
@@ -206,6 +218,12 @@ fn main() {
                     _ => {}
                 })
                 .build(app)?;
+            app.manage(UiLanguageState {
+                toggle,
+                floating,
+                quit,
+                tray,
+            });
 
             Ok(())
         })
@@ -247,7 +265,8 @@ fn main() {
             collapse_edge_window,
             expand_edge_window,
             focus_edge_window,
-            move_edge_tab
+            move_edge_tab,
+            set_app_language
         ])
         .build(tauri::generate_context!())
         .expect("error while building worknote")
@@ -257,6 +276,49 @@ fn main() {
                 show_main_window(app);
             }
         });
+}
+
+#[tauri::command]
+fn set_app_language(
+    app: tauri::AppHandle,
+    state: tauri::State<'_, UiLanguageState>,
+    language: String,
+) -> Result<(), String> {
+    let is_english = language == "en";
+    let toggle_label = if is_english {
+        "Show/Hide Worknote"
+    } else {
+        "显示/隐藏 Worknote"
+    };
+    let floating_label = if is_english {
+        "Switch window mode"
+    } else {
+        "切换窗口模式"
+    };
+    let quit_label = if is_english { "Quit" } else { "退出" };
+
+    state
+        .toggle
+        .set_text(toggle_label)
+        .map_err(|error| error.to_string())?;
+    state
+        .floating
+        .set_text(floating_label)
+        .map_err(|error| error.to_string())?;
+    state
+        .quit
+        .set_text(quit_label)
+        .map_err(|error| error.to_string())?;
+    state
+        .tray
+        .set_tooltip(Some("Worknote"))
+        .map_err(|error| error.to_string())?;
+    if let Some(window) = app.get_webview_window("main") {
+        window
+            .set_title("Worknote")
+            .map_err(|error| error.to_string())?;
+    }
+    Ok(())
 }
 
 fn toggle_main_window(app: &tauri::AppHandle) {
