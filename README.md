@@ -9,6 +9,40 @@ Worknote 是一款轻量桌面工作日志与今日任务工具，适合记录�
 
 Worknote is a lightweight local-first work journal, todo list, daily planner, and task manager for macOS and Windows.
 
+## 产品介绍 / Product introduction
+
+### 中文介绍
+
+<p align="center">
+  <img src="docs/images/worknote-intro-zh.png" alt="Worknote 中文产品介绍" width="900">
+</p>
+
+### English introduction
+
+<p align="center">
+  <img src="docs/images/worknote-intro-en.png" alt="Worknote English product introduction" width="900">
+</p>
+
+## 界面预览 / Interface preview
+
+### 今日任务总览 / Daily overview
+
+<p align="center">
+  <img src="docs/images/worknote-overview-zh.png" alt="Worknote 中文今日任务总览" width="480">
+</p>
+
+### 快速记录与多选标签 / Quick add with multiple labels
+
+<p align="center">
+  <img src="docs/images/worknote-quick-add-zh.png" alt="Worknote 快速记录、优先、紧急和重要多选" width="480">
+</p>
+
+### 完整英文界面 / Complete English interface
+
+<p align="center">
+  <img src="docs/images/worknote-overview-en.png" alt="Worknote English daily task interface" width="480">
+</p>
+
 ## 主要功能
 
 - 快速记录今日任务。
@@ -29,7 +63,6 @@ Worknote is a lightweight local-first work journal, todo list, daily planner, an
 前往 [Releases](https://github.com/greenl31/worknote-desktop/releases) 下载最新版：
 
 - macOS：推荐下载 `.dmg`。
-- macOS 备用包：下载 `.app.tar.gz` 后先解压，再将应用拖入“应用程序”文件夹。
 - Windows 10/11：`-setup.exe`
 
 公开版安装包由 GitHub Actions 在 macOS 和 Windows 环境分别构建。未签名的首次发行版可能触发 macOS Gatekeeper 或 Windows SmartScreen 提示，请只从本仓库的 Releases 页面下载。
