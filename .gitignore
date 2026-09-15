@@ -1,0 +1,26 @@
+# Dependencies and build outputs
+/src-tauri/target/
+/target/
+/dist/
+/build/
+
+# Tauri and OS artifacts
+/.DS_Store
+**/.DS_Store
+/工作日志.app/
+
+# Logs and caches
+*.log
+.cache/
+.tmp/
+tmp/
+/backup/
+
+# Local secrets and databases
+.env
+.env.*
+*.pem
+*.key
+*.sqlite
+*.sqlite3
+*.db
